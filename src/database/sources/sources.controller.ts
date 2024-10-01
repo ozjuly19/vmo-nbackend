@@ -7,30 +7,30 @@ export class SourcesController {
   constructor(private readonly sourcesService: SourcesService) { }
 
   @Post()
-  async createSource(@Body() data: SourcesModel): Promise<SourcesModel> {
-    return this.sourcesService.createSource(data);
+  async create(@Body() data: SourcesModel): Promise<SourcesModel> {
+    return this.sourcesService.create(data);
   }
 
   @Get()
-  async findAllSources(): Promise<SourcesModel[]> {
-    return this.sourcesService.sources({});
+  async findAll(): Promise<SourcesModel[]> {
+    return this.sourcesService.findAll({});
   }
 
   @Get(':id')
-  async findOneSource(@Param('id') id: string): Promise<SourcesModel | null> {
-    return this.sourcesService.source({ id });
+  async findOne(@Param('id') id: string): Promise<SourcesModel | null> {
+    return this.sourcesService.findOne({ id });
   }
 
   @Patch(':id')
-  async updateSource(
+  async update(
     @Param('id') id: string,
     @Body() data: SourcesModel
   ): Promise<SourcesModel> {
-    return this.sourcesService.updateSource({ where: { id }, data });
+    return this.sourcesService.update({ where: { id }, data });
   }
 
   @Delete(':id')
-  async removeSource(@Param('id') id: string): Promise<SourcesModel> {
-    return this.sourcesService.removeSource({ id });
+  async remove(@Param('id') id: string): Promise<SourcesModel> {
+    return this.sourcesService.remove({ id });
   }
 }

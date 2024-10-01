@@ -9,6 +9,8 @@ describe('SourcesController', () => {
   let controller: SourcesController;
   let prisma: DeepMockProxy<PrismaClient>;
 
+  const testObject = { id: 'testid-uuid', name: 'name', shorthand: 'shorthand', timezone: 'America/Denver' };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SourcesController],
@@ -27,42 +29,38 @@ describe('SourcesController', () => {
   });
 
   it('should return an array of sources', async () => {
-    const testSources = [{ id: 'testid-uuid', name: 'name', shorthand: 'shorthand', timezone: 'America/Denver' }];
-    prisma.sources.findMany.mockResolvedValue(testSources);
+    const testObjects = [testObject];
+    prisma.sources.findMany.mockResolvedValue(testObjects);
 
-    const sources = await controller.findAllSources();
-    expect(sources).toEqual(testSources);
+    const sources = await controller.findAll();
+    expect(sources).toEqual(testObjects);
   });
 
   it('should return a single source', async () => {
-    const testSource = { id: 'testid-uuid', name: 'name', shorthand: 'shorthand', timezone: 'America/Denver' };
-    prisma.sources.findUnique.mockResolvedValue(testSource);
+    prisma.sources.findUnique.mockResolvedValue(testObject);
 
-    const source = await controller.findOneSource('1');
-    expect(source).toEqual(testSource);
+    const source = await controller.findOne('1');
+    expect(source).toEqual(testObject);
   });
 
   it('should update a single source', async () => {
-    const testSource = { id: 'testid-uuid', name: 'name', shorthand: 'shorthand', timezone: 'America/Denver' };
-    prisma.sources.update.mockResolvedValue(testSource);
+    prisma.sources.update.mockResolvedValue(testObject);
 
-    const source = await controller.updateSource('testid-uuid', testSource);
-    expect(source).toEqual(testSource);
+    const source = await controller.update('testid-uuid', testObject);
+    expect(source).toEqual(testObject);
   });
 
   it('should create a single source in the db', async () => {
-    const testSource = { id: 'testid-uuid', name: 'name', shorthand: 'shorthand', timezone: 'America/Denver' };
-    prisma.sources.create.mockResolvedValue(testSource);
+    prisma.sources.create.mockResolvedValue(testObject);
 
-    const source = await controller.createSource(testSource);
-    expect(source).toEqual(testSource);
+    const source = await controller.create(testObject);
+    expect(source).toEqual(testObject);
   });
 
   it('should delete a single source', async () => {
-    const testSource = { id: 'testid-uuid', name: 'name', shorthand: 'shorthand', timezone: 'America/Denver' };
-    prisma.sources.delete.mockResolvedValue(testSource);
+    prisma.sources.delete.mockResolvedValue(testObject);
 
-    const source = await controller.removeSource('testid-uuid');
-    expect(source).toEqual(testSource);
+    const source = await controller.remove('testid-uuid');
+    expect(source).toEqual(testObject);
   });
 });

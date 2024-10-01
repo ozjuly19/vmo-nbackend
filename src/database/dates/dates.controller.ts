@@ -1,32 +1,36 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { DatesService } from './dates.service';
+import { Dates as DatesModel } from '@prisma/client';
 
 @Controller('dates')
 export class DatesController {
-  constructor(private readonly datesService: DatesService) {}
+  constructor(private readonly datesService: DatesService) { }
 
   @Post()
-  create(@Body() createDateDto) {
-    return this.datesService.create(createDateDto);
+  async create(@Body() data: DatesModel): Promise<DatesModel> {
+    return this.datesService.create(data);
   }
 
   @Get()
-  findAll() {
-    return this.datesService.findAll();
+  async findAll(): Promise<DatesModel[]> {
+    return this.datesService.findAll({});
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.datesService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<DatesModel | null> {
+    return this.datesService.findOne({ id });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDateDto) {
-    return this.datesService.update(+id, updateDateDto);
+  async update(
+    @Param('id') id: string,
+    @Body() data: DatesModel
+  ): Promise<DatesModel> {
+    return this.datesService.update({ where: { id }, data });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.datesService.remove(+id);
+  async remove(@Param('id') id: string): Promise<DatesModel> {
+    return this.datesService.remove({ id });
   }
 }

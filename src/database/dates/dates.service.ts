@@ -1,24 +1,47 @@
 import { Injectable } from '@nestjs/common';
+import { Dates, Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class DatesService {
-  create(createDateDto) {
-    return 'This action adds a new date';
+  constructor(
+    private prisma: PrismaService
+  ) { }
+
+  async create(data: Prisma.DatesCreateInput): Promise<Dates> {
+    return this.prisma.dates.create({ data });
   }
 
-  findAll() {
-    return `This action returns all dates`;
+  async findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.DatesWhereUniqueInput;
+    where?: Prisma.DatesWhereInput;
+    orderBy?: Prisma.DatesOrderByWithRelationInput;
+  }): Promise<Dates[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.dates.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} date`;
+  async findOne(where: Prisma.DatesWhereUniqueInput): Promise<Dates | null> {
+    return this.prisma.dates.findUnique({ where });
   }
 
-  update(id: number, updateDateDto) {
-    return `This action updates a #${id} date`;
+  async update(params: {
+    where: Prisma.DatesWhereUniqueInput;
+    data: Prisma.DatesUpdateInput;
+  }): Promise<Dates> {
+    const { where, data } = params;
+    return this.prisma.dates.update({ where, data });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} date`;
+  async remove(where: Prisma.DatesWhereUniqueInput): Promise<Dates> {
+    return this.prisma.dates.delete({ where });
   }
 }

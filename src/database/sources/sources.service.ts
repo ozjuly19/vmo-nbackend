@@ -6,11 +6,11 @@ import { PrismaService } from '../prisma/prisma.service';
 export class SourcesService {
   constructor(private prisma: PrismaService) { }
 
-  async createSource(data: Prisma.SourcesCreateInput): Promise<Sources> {
+  async create(data: Prisma.SourcesCreateInput): Promise<Sources> {
     return this.prisma.sources.create({ data });
   }
 
-  async sources(params: {
+  async findAll(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.SourcesWhereUniqueInput;
@@ -27,11 +27,11 @@ export class SourcesService {
     });
   }
 
-  async source(where: Prisma.SourcesWhereUniqueInput): Promise<Sources | null> {
+  async findOne(where: Prisma.SourcesWhereUniqueInput): Promise<Sources | null> {
     return this.prisma.sources.findUnique({ where });
   }
 
-  async updateSource(params: {
+  async update(params: {
     data: Prisma.SourcesUpdateInput,
     where: Prisma.SourcesWhereUniqueInput
   }): Promise<Sources> {
@@ -39,7 +39,7 @@ export class SourcesService {
     return this.prisma.sources.update({ data, where });
   }
 
-  async removeSource(where: Prisma.SourcesWhereUniqueInput): Promise<Sources> {
+  async remove(where: Prisma.SourcesWhereUniqueInput): Promise<Sources> {
     return this.prisma.sources.delete({ where });
   }
 }
