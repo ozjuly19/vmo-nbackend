@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./.dev.db"
+}
+
+model RadioStations {
+  api_key        String   @id @unique(map: "api_key") @default(uuid())
+  api_secret     String
+  source_id      String   @map("source_id")
+  last_heartbeat DateTime @default(now()) @updatedAt
+  description    String?
+}
+
+model Outages {
+  id          String  @id @unique(map: "outages_id") @default(uuid())
+  api_key     String
+  description String?
+  date_id     String  @map("date_id")
+  source_id   String  @map("source_id")
+}
+
+model Users {
+  id           String   @id @unique(map: "users_id") @default(uuid())
+  name         String
+  email        String
+  password     String
+  created_at   DateTime @default(now()) @updatedAt @map("time-created")
+}
+
+model Files {
+  id         String   @id @unique(map: "files_id") @default(uuid())
+  filename   String
+  file_size  Int
+  mime_type  String
+  created_at DateTime @default(now())
+}
+
+model Clips {
+  id      String @id @unique(map: "clips_id") @default(uuid())
+  time    String
+  file_id String @map("file_id")
+  date_id String @map("date_id")
+}
+
+model Dates {
+  id        String   @id @unique(map: "dates_id") @default(uuid())
+  date      DateTime
+  source_id String   @map("source_id")
+}
+
+model Sources {
+  id        String @id @unique(map: "sources_id") @default(uuid())
+  name      String
+  shorthand String
+  timezone  String
+}
