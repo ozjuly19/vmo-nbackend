@@ -13,28 +13,12 @@ datasource db {
   url      = "file:./.dev.db"
 }
 
-model RadioStations {
+model Radios {
   api_key        String   @id @unique(map: "api_key") @default(uuid())
   api_secret     String
   source_id      String   @map("source_id")
   last_heartbeat DateTime @default(now()) @updatedAt
   description    String?
-}
-
-model Outages {
-  id          String  @id @unique(map: "outages_id") @default(uuid())
-  api_key     String
-  description String?
-  date_id     String  @map("date_id")
-  source_id   String  @map("source_id")
-}
-
-model Users {
-  id           String   @id @unique(map: "users_id") @default(uuid())
-  name         String
-  email        String
-  password     String
-  created_at   DateTime @default(now()) @updatedAt @map("time-created")
 }
 
 model Files {
