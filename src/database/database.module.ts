@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
-import { SourcesService } from './sources/sources.service';
-import { PrismaService } from './prisma/prisma.service';
-import { SourcesController } from './sources/sources.controller';
+import { DatesModule } from './dates/dates.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { SourcesModule } from './sources/sources.module';
 
 @Module({
-  controllers: [SourcesController],
-  providers: [SourcesService, PrismaService],
-  exports: [SourcesService],
+  controllers: [],
+  providers: [],
+  imports: [
+    DatesModule,
+    SourcesModule,
+    PrismaModule
+  ],
 })
-export class DatabaseModule {}
+
+export class DatabaseModule { }
