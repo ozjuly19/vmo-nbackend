@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SourcesController } from './sources.controller';
 import { SourcesService } from './sources.service';
 import { PrismaClient } from '@prisma/client'
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { mockDeep, DeepMockProxy } from 'jest-mock-extended'
 
 describe('SourcesController', () => {
