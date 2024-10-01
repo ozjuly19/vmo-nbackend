@@ -6,6 +6,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 @Module({
   controllers: [RadiosController],
   providers: [RadiosService],
+  exports: [RadiosService],
   imports: [PrismaModule],
 })
 export class RadiosModule {}

@@ -7,5 +7,6 @@ import { PrismaModule } from '../prisma/prisma.module';
   controllers: [FilesController],
   providers: [FilesService],
   imports: [PrismaModule],
+  exports: [FilesService],
 })
-export class FilesModule {}
+export class FilesModule { }

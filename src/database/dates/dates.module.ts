@@ -7,5 +7,6 @@ import { PrismaModule } from '../prisma/prisma.module';
   controllers: [DatesController],
   providers: [DatesService],
   imports: [PrismaModule],
+  exports: [DatesService],
 })
 export class DatesModule { }

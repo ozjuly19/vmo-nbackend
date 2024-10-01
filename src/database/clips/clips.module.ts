@@ -7,5 +7,6 @@ import { PrismaModule } from '../prisma/prisma.module';
   controllers: [ClipsController],
   providers: [ClipsService],
   imports: [PrismaModule],
+  exports: [ClipsService],
 })
 export class ClipsModule {}
