@@ -2,14 +2,18 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DatesController } from './dates.controller';
 import { DatesService } from './dates.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { PrismaClient } from '@prisma/client'
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended'
+import { PrismaClient } from '@prisma/client';
+import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
 
 describe('DatesController', () => {
   let controller: DatesController;
   let prisma: DeepMockProxy<PrismaClient>;
 
-  const testObject = { id: 'testid-uuid', date: new Date(), source_id: 'test-uuid' };
+  const testObject = {
+    id: 'testid-uuid',
+    date: new Date(),
+    source_id: 'test-uuid',
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -63,5 +67,4 @@ describe('DatesController', () => {
     const date = await controller.remove('testid-uuid');
     expect(date).toEqual(testObject);
   });
-
 });

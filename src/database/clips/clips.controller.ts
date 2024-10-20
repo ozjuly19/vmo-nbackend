@@ -1,10 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ClipsService } from './clips.service';
 import { Clips as ClipsModel } from '@prisma/client';
 
 @Controller('clips')
 export class ClipsController {
-  constructor(private readonly clipsService: ClipsService) { }
+  constructor(private readonly clipsService: ClipsService) {}
 
   @Post()
   async create(@Body() data: ClipsModel) {

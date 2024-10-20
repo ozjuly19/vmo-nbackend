@@ -2,14 +2,20 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RadiosController } from './radios.controller';
 import { RadiosService } from './radios.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { PrismaClient } from '@prisma/client'
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended'
+import { PrismaClient } from '@prisma/client';
+import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
 
 describe('RadiosController', () => {
   let controller: RadiosController;
   let prisma: DeepMockProxy<PrismaClient>;
 
-  const testObject = { api_key: 'test-uuid', api_secret: 'secret', source_id: 'testid-uuid', last_heartbeat: new Date(), description: 'test' };
+  const testObject = {
+    api_key: 'test-uuid',
+    api_secret: 'secret',
+    source_id: 'testid-uuid',
+    last_heartbeat: new Date(),
+    description: 'test',
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -63,5 +69,4 @@ describe('RadiosController', () => {
     const radio = await controller.remove('testid-uuid');
     expect(radio).toEqual(testObject);
   });
-
 });

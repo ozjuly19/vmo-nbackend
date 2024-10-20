@@ -1,10 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FilesService } from './files.service';
 import { Files as FilesModel } from '@prisma/client';
 
 @Controller('files')
 export class FilesController {
-  constructor(private readonly filesService: FilesService) { }
+  constructor(private readonly filesService: FilesService) {}
 
   @Post()
   async create(@Body() data: FilesModel) {

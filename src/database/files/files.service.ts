@@ -4,9 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FilesService {
-  constructor(
-    private prisma: PrismaService
-  ) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: Prisma.FilesCreateInput): Promise<Files> {
     return this.prisma.files.create({ data });

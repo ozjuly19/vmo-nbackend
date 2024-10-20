@@ -1,10 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RadiosService } from './radios.service';
 import { Radios as RadiosModel } from '@prisma/client';
 
 @Controller('radios')
 export class RadiosController {
-  constructor(private readonly radiosService: RadiosService) { }
+  constructor(private readonly radiosService: RadiosService) {}
 
   @Post()
   async create(@Body() data: RadiosModel) {

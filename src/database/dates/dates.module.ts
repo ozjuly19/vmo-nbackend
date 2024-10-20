@@ -9,4 +9,4 @@ import { PrismaModule } from '../prisma/prisma.module';
   imports: [PrismaModule],
   exports: [DatesService],
 })
-export class DatesModule { }
+export class DatesModule {}

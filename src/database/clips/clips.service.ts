@@ -4,9 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ClipsService {
-  constructor(
-    private prisma: PrismaService
-  ) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: Prisma.ClipsCreateInput): Promise<Clips> {
     return this.prisma.clips.create({ data });

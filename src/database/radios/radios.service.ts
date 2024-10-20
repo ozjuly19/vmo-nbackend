@@ -4,9 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class RadiosService {
-  constructor(
-    private prisma: PrismaService
-  ) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: Prisma.RadiosCreateInput): Promise<Radios> {
     return this.prisma.radios.create({ data });

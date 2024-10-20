@@ -1,10 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DatesService } from './dates.service';
 import { Dates as DatesModel } from '@prisma/client';
 
 @Controller('dates')
 export class DatesController {
-  constructor(private readonly datesService: DatesService) { }
+  constructor(private readonly datesService: DatesService) {}
 
   @Post()
   async create(@Body() data: DatesModel): Promise<DatesModel> {
@@ -24,7 +32,7 @@ export class DatesController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() data: DatesModel
+    @Body() data: DatesModel,
   ): Promise<DatesModel> {
     return this.datesService.update({ where: { id }, data });
   }

@@ -8,4 +8,4 @@ import { RadiosModule } from '../database/radios/radios.module';
   providers: [AuthService],
   imports: [RadiosModule],
 })
-export class AuthModule { }
+export class AuthModule {}

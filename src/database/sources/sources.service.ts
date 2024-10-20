@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class SourcesService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: Prisma.SourcesCreateInput): Promise<Sources> {
     return this.prisma.sources.create({ data });
@@ -27,13 +27,15 @@ export class SourcesService {
     });
   }
 
-  async findOne(where: Prisma.SourcesWhereUniqueInput): Promise<Sources | null> {
+  async findOne(
+    where: Prisma.SourcesWhereUniqueInput,
+  ): Promise<Sources | null> {
     return this.prisma.sources.findUnique({ where });
   }
 
   async update(params: {
-    data: Prisma.SourcesUpdateInput,
-    where: Prisma.SourcesWhereUniqueInput
+    data: Prisma.SourcesUpdateInput;
+    where: Prisma.SourcesWhereUniqueInput;
   }): Promise<Sources> {
     const { data, where } = params;
     return this.prisma.sources.update({ data, where });

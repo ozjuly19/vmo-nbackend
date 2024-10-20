@@ -15,8 +15,7 @@ import { RadiosModule } from './radios/radios.module';
     PrismaModule,
     ClipsModule,
     FilesModule,
-    RadiosModule
+    RadiosModule,
   ],
 })
-
-export class DatabaseModule { }
+export class DatabaseModule {}

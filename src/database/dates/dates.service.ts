@@ -4,9 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class DatesService {
-  constructor(
-    private prisma: PrismaService
-  ) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: Prisma.DatesCreateInput): Promise<Dates> {
     return this.prisma.dates.create({ data });

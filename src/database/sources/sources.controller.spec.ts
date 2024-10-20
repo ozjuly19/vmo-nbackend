@@ -1,15 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SourcesController } from './sources.controller';
 import { SourcesService } from './sources.service';
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended'
+import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
 
 describe('SourcesController', () => {
   let controller: SourcesController;
   let prisma: DeepMockProxy<PrismaClient>;
 
-  const testObject = { id: 'testid-uuid', name: 'name', shorthand: 'shorthand', timezone: 'America/Denver' };
+  const testObject = {
+    id: 'testid-uuid',
+    name: 'name',
+    shorthand: 'shorthand',
+    timezone: 'America/Denver',
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

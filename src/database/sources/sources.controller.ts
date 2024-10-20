@@ -1,10 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SourcesService } from './sources.service';
 import { Sources as SourcesModel } from '@prisma/client';
 
 @Controller('sources')
 export class SourcesController {
-  constructor(private readonly sourcesService: SourcesService) { }
+  constructor(private readonly sourcesService: SourcesService) {}
 
   @Post()
   async create(@Body() data: SourcesModel): Promise<SourcesModel> {
@@ -24,7 +32,7 @@ export class SourcesController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() data: SourcesModel
+    @Body() data: SourcesModel,
   ): Promise<SourcesModel> {
     return this.sourcesService.update({ where: { id }, data });
   }

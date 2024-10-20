@@ -2,14 +2,19 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClipsController } from './clips.controller';
 import { ClipsService } from './clips.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { PrismaClient } from '@prisma/client'
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended'
+import { PrismaClient } from '@prisma/client';
+import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
 
 describe('ClipsController', () => {
   let controller: ClipsController;
   let prisma: DeepMockProxy<PrismaClient>;
 
-  const testObject = { id: 'testid-uuid', time: "02-22-40", file_id: 'testid-uuid', date_id: 'testid-uuid' };
+  const testObject = {
+    id: 'testid-uuid',
+    time: '02-22-40',
+    file_id: 'testid-uuid',
+    date_id: 'testid-uuid',
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -63,5 +68,4 @@ describe('ClipsController', () => {
     const clip = await controller.remove('testid-uuid');
     expect(clip).toEqual(testObject);
   });
-
 });

@@ -2,14 +2,20 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { PrismaClient } from '@prisma/client'
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended'
+import { PrismaClient } from '@prisma/client';
+import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
 
 describe('FilesController', () => {
   let controller: FilesController;
   let prisma: DeepMockProxy<PrismaClient>;
 
-  const testObject = { id: 'testid-uuid', filename: 'testing', file_size: 50, mime_type: 'audio/mpeg', created_at: new Date() };
+  const testObject = {
+    id: 'testid-uuid',
+    filename: 'testing',
+    file_size: 50,
+    mime_type: 'audio/mpeg',
+    created_at: new Date(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -63,5 +69,4 @@ describe('FilesController', () => {
     const file = await controller.remove('testid-uuid');
     expect(file).toEqual(testObject);
   });
-
 });
