@@ -6,6 +6,30 @@ import { PrismaService } from '../prisma/prisma.service';
 export class DatesService {
   constructor(private prisma: PrismaService) {}
 
+  async createNow(source_id: string): Promise<Dates> {
+    // Get the current date in the format YYYY-MM-DD
+    const date = new Date(new Date().toISOString().split('T')[0]);
+
+    // Query the database to see if the dbDate already exists
+    const dbDate = await this.prisma.dates.findFirst({
+      where: { date, source_id },
+    });
+
+    // Break early if the dbDate is found
+    if (dbDate) {
+      return dbDate;
+    }
+
+    // Construct the new date object
+    const newDate = {
+      date,
+      source_id,
+    } as Prisma.DatesCreateInput;
+
+    // Create it and return it
+    return this.create(newDate);
+  }
+
   async create(data: Prisma.DatesCreateInput): Promise<Dates> {
     return this.prisma.dates.create({ data });
   }

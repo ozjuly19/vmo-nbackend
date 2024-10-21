@@ -63,10 +63,10 @@ describe('FilesController', () => {
     expect(file).toEqual(testObject);
   });
 
-  it('should delete a single file', async () => {
-    prisma.files.delete.mockResolvedValue(testObject);
+  // it('should delete a single file', async () => {
+  //   prisma.files.delete.mockResolvedValue(testObject);
 
-    const file = await controller.remove('testid-uuid');
-    expect(file).toEqual(testObject);
-  });
+  //   const file = await controller.remove('testid-uuid');
+  //   expect(file).toEqual(testObject);
+  // });
 });

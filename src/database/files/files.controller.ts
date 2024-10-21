@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { Files as FilesModel } from '@prisma/client';
 
@@ -34,8 +26,9 @@ export class FilesController {
     return this.filesService.update({ where: { id }, data });
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.filesService.remove({ id });
-  }
+  // Not safe for production
+  // @Delete(':id')
+  // async remove(@Param('id') id: string) {
+  //   return this.filesService.remove({ id });
+  // }
 }
