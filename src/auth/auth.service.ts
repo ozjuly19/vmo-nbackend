@@ -1,17 +1,17 @@
 import { randomBytes, scrypt } from 'node:crypto';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Radios as RadiosModel, Prisma } from '@prisma/client';
-import { RadiosService } from '../database/radios/radios.service';
-import { CreateApiRadioDto } from './dto/auth.dto';
+import { RadioSource as RadioSourceModel, Prisma } from '@prisma/client';
+import { RadioSourceService } from '../database/radiosource/radiosource.service';
+import { CreateAuthRadioDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly radiosService: RadiosService) {}
+  constructor(private readonly radiosService: RadioSourceService) {}
 
   async radioAuthCheck(
     api_key: string,
     api_secret: string,
-  ): Promise<RadiosModel | null> {
+  ): Promise<RadioSourceModel | null> {
     const radio = await this.radiosService.findOne({
       id: api_key,
     });
@@ -27,11 +27,11 @@ export class AuthService {
     throw new UnauthorizedException('Invalid API Key or Secret');
   }
 
-  async registerNewRadio(data: CreateApiRadioDto): Promise<RadiosModel> {
+  async registerNewRadio(data: CreateAuthRadioDto): Promise<RadioSourceModel> {
     // Generate uuid as the api password
     const cleartext_api_secret = randomBytes(16).toString('hex');
 
-    const newRadioObject: Prisma.RadiosCreateInput = {
+    const newRadioObject: Prisma.RadioSourceCreateInput = {
       api_secret: await this.hashSecret(cleartext_api_secret),
       ...data,
     };

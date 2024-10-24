@@ -1,28 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { Dates, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { RadioSourceService } from '../radiosource/radiosource.service';
 
 @Injectable()
 export class DatesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private radioSourceService: RadioSourceService,
+  ) {}
 
-  async createNow(source_id: string): Promise<Dates> {
-    // Get the source timezone
-    const source = await this.prisma.sources.findUnique({
-      where: { id: source_id },
+  async createNow(radio_source_id: string): Promise<Dates> {
+    // Get the radioSource by id
+    const radioSource = await this.radioSourceService.findOne({
+      id: radio_source_id,
     });
 
-    // Throw an error if the source is not found
-    if (!source) throw new Error('Source not found with given id!');
+    // Throw an error if the radioSource is not found
+    if (!radioSource) throw new Error('Radio source not found with given id!');
 
     // Get the current date in the format YYYY-MM-DD
     const display_date = new Date().toLocaleDateString('en-US', {
-      timeZone: source.timezone,
+      timeZone: radioSource.source.timezone,
     });
 
     // Query the database to see if the dbDate already exists
     const dbDate = await this.prisma.dates.findFirst({
-      where: { display_date, source_id },
+      where: { display_date, radio_source_id },
     });
 
     // Break early if the dbDate is found
@@ -33,7 +37,7 @@ export class DatesService {
     // Construct the new date object
     const newDate = {
       display_date,
-      source_id,
+      radio_source_id,
     } as Prisma.DatesCreateInput;
 
     // Create it and return it

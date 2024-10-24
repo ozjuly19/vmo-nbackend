@@ -4,6 +4,7 @@ import { DatesService } from './dates.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClient } from '@prisma/client';
 import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
+import { RadioSourceService } from '../radiosource/radiosource.service';
 
 describe('DatesController', () => {
   let controller: DatesController;
@@ -13,13 +14,13 @@ describe('DatesController', () => {
     id: 'testid-uuid',
     display_date: '2021-01-01',
     created_dt: new Date(),
-    source_id: 'test-uuid',
+    radio_source_id: 'test-uuid',
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DatesController],
-      providers: [DatesService, PrismaService],
+      providers: [DatesService, PrismaService, RadioSourceService],
     })
       .overrideProvider(PrismaService)
       .useValue(mockDeep<PrismaClient>())

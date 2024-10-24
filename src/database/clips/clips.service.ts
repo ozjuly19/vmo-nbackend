@@ -1,36 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { Clips, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { FilesService } from '../files/files.service';
 import { DatesService } from '../dates/dates.service';
 import { CreateClipDto } from './dto/clips.dto';
+import { writeFileSync } from 'fs';
 
 @Injectable()
 export class ClipsService {
   constructor(
     private prisma: PrismaService,
-    private filesService: FilesService,
     private datesService: DatesService,
   ) {}
 
-  // Delete all clips, file_id records, and fs data for clips older than the specified EPOCH time
+  // Delete all clips, file_id records, and fs data for clips older than the specified time
   async deleteClipsFromDateAndOlder(olderThan: Date): Promise<string> {
-    // Find all files older than the specified EPOCH time
-    const files = await this.filesService.findAll({
-      where: { created_at: { lt: olderThan.toISOString() } },
-    });
-
-    // Find all clips referencing the files
+    // Find all clips older than the specified time
     const clips = await this.findAll({
-      where: { file_id: { in: files.map((file) => file.id) } },
+      where: { created_dt: { lt: olderThan.toISOString() } },
     });
 
-    // Delete all clips, file_id records, and fs data for clips older than the specified EPOCH time
+    // Delete all clips and fs data for clips older than the specified time
     for (const clip of clips) {
       await this.remove(clip);
-      await this.filesService.remove(
-        files.find((file) => file.id === clip.file_id) ?? { id: clip.file_id },
-      );
     }
 
     // Delete empty date records
@@ -70,10 +61,10 @@ export class ClipsService {
     // Do validations
     this._validateClipFile(clipFile);
 
-    const source_id = '671a86f784f019d52c593a49'; // TODO: source_id should be dynamic and grabbed from the request via radio auth
+    const radio_source_id = '671aad566a8f653b7b401a57'; // TODO: radio_source_id should be dynamic and grabbed from the request via radio auth
 
     // Create date if needed
-    const dbDate = await this.datesService.createNow(source_id);
+    const dbDate = await this.datesService.createNow(radio_source_id);
 
     // Serialize the new file name
     const new_file_name =
@@ -82,7 +73,7 @@ export class ClipsService {
         .replaceAll(':', '-');
 
     // Create file in the database
-    const dbFile = await this.filesService.writeFileToDiskAndCreate(
+    const fsFile = await this.writeFileToDiskAndCreate(
       {
         name: new_file_name,
         size: clipFile.size,
@@ -94,14 +85,29 @@ export class ClipsService {
     // Construct data with file_id and date_id
     const data = {
       display_time: createClipData.display_time,
-      file_id: dbFile.id,
       date_id: dbDate.id,
+      file: fsFile,
     } as Prisma.ClipsCreateInput;
 
     // Create clip in the database
     const dbClip = this.create(data);
 
     return dbClip;
+  }
+
+  // Create file in the connected fs and return the metadata
+  async writeFileToDiskAndCreate(
+    data: Prisma.FileCreateInput,
+    buffer: Buffer,
+  ): Promise<Prisma.FileCreateInput> {
+    // Make sure data.name is an allowed file name
+    if (!data.name.match(/^[a-zA-Z0-9-_]+$/)) {
+      throw new Error(`Invalid file name: "${data.name}"`);
+    }
+
+    writeFileSync(`${process.env.UPLOAD_PATH}/${data.name}`, buffer);
+
+    return data;
   }
 
   _validateClipFile(clipFile: Express.Multer.File) {
@@ -149,17 +155,5 @@ export class ClipsService {
 
   async remove(where: Prisma.ClipsWhereUniqueInput): Promise<Clips> {
     return this.prisma.clips.delete({ where });
-  }
-}
-
-{
-  {
-    const p = new PrismaService();
-    const f = new FilesService(p);
-    const d = new DatesService(p);
-
-    const a = new ClipsService(p, f, d);
-
-    a.deleteClipsFromDateAndOlder(new Date());
   }
 }

@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RadioApiAuthDto } from './dto/auth.dto';
-import { CreateApiRadioDto } from './dto/auth.dto';
+import { CreateAuthRadioDto } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +16,7 @@ export class AuthController {
   }
 
   @Post('register/radio')
-  async radioApiRegister(@Body() regestierRadioApiDto: CreateApiRadioDto) {
+  async radioApiRegister(@Body() regestierRadioApiDto: CreateAuthRadioDto) {
     return await this.authService.registerNewRadio(regestierRadioApiDto);
   }
 }

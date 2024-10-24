@@ -4,8 +4,8 @@ import { ClipsService } from './clips.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClient } from '@prisma/client';
 import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { FilesService } from '../files/files.service';
 import { DatesService } from '../dates/dates.service';
+import { RadioSourceService } from '../radiosource/radiosource.service';
 
 describe('ClipsController', () => {
   let controller: ClipsController;
@@ -15,14 +15,23 @@ describe('ClipsController', () => {
     id: 'testid-uuid',
     display_time: '02-22-40',
     created_dt: new Date(),
-    file_id: 'testid-uuid',
     date_id: 'testid-uuid',
+    file: {
+      name: 'testfile.mp3',
+      size: 40,
+      mime_type: 'audio/mpeg',
+    },
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ClipsController],
-      providers: [ClipsService, PrismaService, FilesService, DatesService],
+      providers: [
+        ClipsService,
+        PrismaService,
+        DatesService,
+        RadioSourceService,
+      ],
     })
       .overrideProvider(PrismaService)
       .useValue(mockDeep<PrismaClient>())

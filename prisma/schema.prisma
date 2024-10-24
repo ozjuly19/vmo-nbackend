@@ -13,40 +13,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Radios {
+model RadioSource {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   api_secret     String
-  source_id      String    @map("source_id")
   last_heartbeat DateTime? @default(now()) @updatedAt
   description    String
+  source         Source // -> Embedded sources in the RadioSource
 }
 
-model Files {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String   @map("filename")
-  size       Int      @map("file_size")
-  mime_type  String
-  created_at DateTime @default(now())
+type Source { // <- Embedded object
+  name      String
+  shorthand String
+  timezone  String
 }
+
 
 model Clips {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   display_time String
   created_dt   DateTime @default(now())
-  file_id      String @map("file_id")
   date_id      String @map("date_id")
+  file         File // -> Embedded files in the Clips
+}
+
+type File { // <- Embedded object
+  name       String   @map("filename")
+  size       Int      @map("file_size")
+  mime_type  String
 }
 
 model Dates {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  display_date String
-  created_dt   DateTime @default(now())
-  source_id    String @map("source_id")
-}
-
-model Sources {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  shorthand String
-  timezone  String
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  display_date      String
+  created_dt        DateTime @default(now())
+  radio_source_id   String @map("radio_source_id")
 }

@@ -1,4 +1,10 @@
-import { IsByteLength, IsHexadecimal, IsString } from 'class-validator';
+import {
+  IsByteLength,
+  IsDefined,
+  IsHexadecimal,
+  IsString,
+} from 'class-validator';
+import { SourceDto } from '../../database/radiosource/dto/radiosource.dto';
 
 export class RadioApiAuthDto {
   @IsByteLength(12)
@@ -9,11 +15,10 @@ export class RadioApiAuthDto {
   api_secret: string;
 }
 
-export class CreateApiRadioDto {
-  @IsByteLength(12)
-  @IsHexadecimal()
-  source_id: string;
-
+export class CreateAuthRadioDto {
   @IsString()
   description: string;
+
+  @IsDefined()
+  source: SourceDto;
 }
