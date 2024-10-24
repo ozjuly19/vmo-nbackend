@@ -30,7 +30,13 @@ export class RadioSourceService {
   async findOne(
     where: Prisma.RadioSourceWhereUniqueInput,
   ): Promise<RadioSource | null> {
-    return this.prisma.radioSource.findUnique({ where });
+    try {
+      return this.prisma.radioSource.findUnique({ where });
+    } catch (e) {
+      console.error(e);
+      // Catch error and return invalid data
+      throw new Error('Invalid data!');
+    }
   }
 
   async update(params: {
