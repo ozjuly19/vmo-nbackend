@@ -13,7 +13,8 @@ describe('ClipsController', () => {
 
   const testObject = {
     id: 'testid-uuid',
-    time: '02-22-40',
+    display_time: '02-22-40',
+    created_dt: new Date(),
     file_id: 'testid-uuid',
     date_id: 'testid-uuid',
   };

@@ -11,8 +11,8 @@ describe('FilesController', () => {
 
   const testObject = {
     id: 'testid-uuid',
-    filename: 'testing',
-    file_size: 50,
+    name: 'testing',
+    size: 50,
     mime_type: 'audio/mpeg',
     created_at: new Date(),
   };

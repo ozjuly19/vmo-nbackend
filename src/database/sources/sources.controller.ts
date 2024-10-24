@@ -9,13 +9,14 @@ import {
 } from '@nestjs/common';
 import { SourcesService } from './sources.service';
 import { Sources as SourcesModel } from '@prisma/client';
+import { CreateSourceDto } from './dto/sources.dto';
 
 @Controller('sources')
 export class SourcesController {
   constructor(private readonly sourcesService: SourcesService) {}
 
   @Post()
-  async create(@Body() data: SourcesModel): Promise<SourcesModel> {
+  async create(@Body() data: CreateSourceDto): Promise<SourcesModel> {
     return this.sourcesService.create(data);
   }
 

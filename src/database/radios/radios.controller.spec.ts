@@ -10,7 +10,7 @@ describe('RadiosController', () => {
   let prisma: DeepMockProxy<PrismaClient>;
 
   const testObject = {
-    api_key: 'test-uuid',
+    id: 'test-uuid',
     api_secret: 'secret',
     source_id: 'testid-uuid',
     last_heartbeat: new Date(),

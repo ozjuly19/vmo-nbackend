@@ -13,7 +13,12 @@ export class FilesService {
     data: Prisma.FilesCreateInput,
     buffer: Buffer,
   ): Promise<Files> {
-    writeFileSync(`${process.env.UPLOAD_PATH}/${data.filename}`, buffer);
+    // Make sure data.name is an allowed file name
+    if (!data.name.match(/^[a-zA-Z0-9-_]+$/)) {
+      throw new Error(`Invalid file name: "${data.name}"`);
+    }
+
+    writeFileSync(`${process.env.UPLOAD_PATH}/${data.name}`, buffer);
 
     return this.create(data);
   }
@@ -51,12 +56,15 @@ export class FilesService {
     return this.prisma.files.update({ where, data });
   }
 
-  async remove(where: Prisma.FilesWhereUniqueInput): Promise<Files> {
-    // Fetch filename if not provided
-    if (!where.filename) where.filename = (await this.findOne(where))?.filename;
+  async remove(where_file: Prisma.FilesWhereUniqueInput): Promise<Files> {
+    // Fetch file name if not provided
+    if (!where_file.name)
+      where_file.name = (await this.findOne(where_file))?.name;
+
+    const file_name = where_file.name;
 
     try {
-      rmSync(`${process.env.UPLOAD_PATH}/${where.filename}`);
+      rmSync(`${process.env.UPLOAD_PATH}/${file_name}`);
     } catch (e) {
       // if the error is 42680 ignore it that means the file is already deleted
       if (e.code !== 'ENOENT') {
@@ -64,6 +72,6 @@ export class FilesService {
       }
     }
 
-    return this.prisma.files.delete({ where });
+    return this.prisma.files.delete({ where: where_file });
   }
 }

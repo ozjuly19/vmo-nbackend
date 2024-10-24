@@ -1,6 +1,6 @@
-import { randomBytes, randomUUID, scrypt } from 'node:crypto';
+import { randomBytes, scrypt } from 'node:crypto';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Radios as RadiosModel } from '@prisma/client';
+import { Radios as RadiosModel, Prisma } from '@prisma/client';
 import { RadiosService } from '../database/radios/radios.service';
 import { CreateApiRadioDto } from './dto/auth.dto';
 
@@ -12,7 +12,9 @@ export class AuthService {
     api_key: string,
     api_secret: string,
   ): Promise<RadiosModel | null> {
-    const radio = await this.radiosService.findOne({ api_key });
+    const radio = await this.radiosService.findOne({
+      id: api_key,
+    });
 
     // Check if the creds returned a valid radio.
     if (
@@ -29,10 +31,8 @@ export class AuthService {
     // Generate uuid as the api password
     const cleartext_api_secret = randomBytes(16).toString('hex');
 
-    const newRadioObject: RadiosModel = {
-      api_key: randomUUID(),
+    const newRadioObject: Prisma.RadiosCreateInput = {
       api_secret: await this.hashSecret(cleartext_api_secret),
-      last_heartbeat: new Date(),
       ...data,
     };
 

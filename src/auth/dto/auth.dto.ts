@@ -1,7 +1,8 @@
-import { IsUUID, IsString } from 'class-validator';
+import { IsByteLength, IsHexadecimal, IsString } from 'class-validator';
 
 export class RadioApiAuthDto {
-  @IsUUID()
+  @IsByteLength(12)
+  @IsHexadecimal()
   api_key: string;
 
   @IsString()
@@ -9,23 +10,10 @@ export class RadioApiAuthDto {
 }
 
 export class CreateApiRadioDto {
-  @IsUUID()
+  @IsByteLength(12)
+  @IsHexadecimal()
   source_id: string;
 
   @IsString()
-  description: string | null;
-}
-
-export class RadioApiDto {
-  @IsUUID()
-  api_key?: string;
-
-  @IsString()
-  api_secret?: string;
-
-  @IsUUID()
-  source_id?: string;
-
-  @IsString()
-  description?: string | null;
+  description: string;
 }

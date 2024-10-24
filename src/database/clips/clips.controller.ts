@@ -46,7 +46,9 @@ export class ClipsController {
 
   @Delete('fromDateAndOlder/:date')
   async deleteClipsFromDateAndOlder(@Param() data: DeleteOldClipsDto) {
-    return this.clipsService.deleteClipsFromDateAndOlder(new Date(data.date));
+    return this.clipsService.deleteClipsFromDateAndOlder(
+      new Date(data.display_date),
+    );
   }
 
   // Not safe for production

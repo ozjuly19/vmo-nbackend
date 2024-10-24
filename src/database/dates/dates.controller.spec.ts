@@ -11,7 +11,8 @@ describe('DatesController', () => {
 
   const testObject = {
     id: 'testid-uuid',
-    date: new Date(),
+    display_date: '2021-01-01',
+    created_dt: new Date(),
     source_id: 'test-uuid',
   };
 

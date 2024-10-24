@@ -26,16 +26,16 @@ export class RadiosController {
 
   @Get(':api_key')
   async findOne(@Param('api_key') api_key: string) {
-    return this.radiosService.findOne({ api_key });
+    return this.radiosService.findOne({ id: api_key });
   }
 
   @Patch(':api_key')
   async update(@Param('api_key') api_key: string, @Body() data: RadiosModel) {
-    return this.radiosService.update({ where: { api_key }, data });
+    return this.radiosService.update({ where: { id: api_key }, data });
   }
 
   @Delete(':api_key')
   async remove(@Param('api_key') api_key: string) {
-    return this.radiosService.remove({ api_key });
+    return this.radiosService.remove({ id: api_key });
   }
 }

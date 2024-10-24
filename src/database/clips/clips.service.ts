@@ -37,7 +37,7 @@ export class ClipsService {
     // Get list of date_ids from olderThan date and older
     // Query the database for the count of clips for each date_id
     const dateIds = await this.datesService
-      .findAll({ where: { date: { lt: olderThan } } })
+      .findAll({ where: { created_dt: { lt: olderThan } } })
       .then((dates) => dates.map((date) => date.id));
 
     const dateCounts = await this.prisma.clips.groupBy({
@@ -70,16 +70,22 @@ export class ClipsService {
     // Do validations
     this._validateClipFile(clipFile);
 
-    const source_id = '4eb47037-651a-4b3a-8c6b-09fe6aacdbd0'; // TODO: source_id should be dynamic and grabbed from the request via radio auth
+    const source_id = '671a86f784f019d52c593a49'; // TODO: source_id should be dynamic and grabbed from the request via radio auth
 
     // Create date if needed
     const dbDate = await this.datesService.createNow(source_id);
 
+    // Serialize the new file name
+    const new_file_name =
+      `${dbDate.display_date}_at_${createClipData.display_time}`
+        .replaceAll('/', '-')
+        .replaceAll(':', '-');
+
     // Create file in the database
     const dbFile = await this.filesService.writeFileToDiskAndCreate(
       {
-        filename: `${dbDate.date.toISOString().split('T')[0]}@${createClipData.time}`,
-        file_size: clipFile.size,
+        name: new_file_name,
+        size: clipFile.size,
         mime_type: clipFile.mimetype,
       },
       clipFile.buffer,
@@ -87,7 +93,7 @@ export class ClipsService {
 
     // Construct data with file_id and date_id
     const data = {
-      time: createClipData.time,
+      display_time: createClipData.display_time,
       file_id: dbFile.id,
       date_id: dbDate.id,
     } as Prisma.ClipsCreateInput;
