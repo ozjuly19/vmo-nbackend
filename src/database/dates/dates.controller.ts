@@ -24,6 +24,11 @@ export class DatesController {
     return this.datesService.findAll({});
   }
 
+  @Get('by-source/:id')
+  async findBySource(@Param('id') id: string): Promise<DatesModel[]> {
+    return this.datesService.findAll({ where: { radio_source_id: id } });
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<DatesModel | null> {
     return this.datesService.findOne({ id });

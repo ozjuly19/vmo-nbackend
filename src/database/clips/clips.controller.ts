@@ -43,6 +43,11 @@ export class ClipsController {
     return this.clipsService.findAll({});
   }
 
+  @Get('by-date/:id')
+  async findByDate(@Param('id') id: string) {
+    return this.clipsService.findAll({ where: { date_id: id } });
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.clipsService.findOne({ id });
