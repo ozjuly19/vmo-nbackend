@@ -14,37 +14,36 @@ datasource db {
 }
 
 model RadioSource {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  api_secret     String
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  api_secret     String    @unique
   last_heartbeat DateTime? @default(now()) @updatedAt
   description    String
   source         Source // -> Embedded sources in the RadioSource
 }
 
-type Source { // <- Embedded object
+type Source {
   name      String
   shorthand String
   timezone  String
 }
 
-
 model Clips {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   display_time String
   created_dt   DateTime @default(now())
-  date_id      String @map("date_id")
+  date_id      String   @map("date_id")
   file         File // -> Embedded files in the Clips
 }
 
-type File { // <- Embedded object
-  name       String   @map("filename")
-  size       Int      @map("file_size")
-  mime_type  String
+type File {
+  name      String @map("filename")
+  size      Int    @map("file_size")
+  mime_type String
 }
 
 model Dates {
-  id                String @id @default(auto()) @map("_id") @db.ObjectId
-  display_date      String
-  created_dt        DateTime @default(now())
-  radio_source_id   String @map("radio_source_id")
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  display_date    String
+  created_dt      DateTime @default(now())
+  radio_source_id String   @map("radio_source_id")
 }

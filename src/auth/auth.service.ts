@@ -8,20 +8,22 @@ import { CreateAuthRadioDto } from './dto/auth.dto';
 export class AuthService {
   constructor(private readonly radiosService: RadioSourceService) {}
 
-  async radioAuthCheck(
-    api_key: string,
-    api_secret: string,
-  ): Promise<RadioSourceModel | null> {
+  async verifyApiAuthN(api_token: string): Promise<RadioSourceModel | null> {
+    // Hash api_token
+    const api_secret = await this.hashSecret(api_token);
+
     const radio = await this.radiosService.findOne({
-      id: api_key,
+      api_secret,
     });
 
+    if (radio) return radio;
+
     // Check if the creds returned a valid radio.
-    if (
-      radio &&
-      (await this.validateSecretToHashed(api_secret, radio.api_secret))
-    )
-      return radio;
+    // if (
+    // radio &&
+    // (await this.validateSecretToHashed(api_secret, radio.api_secret))
+    // )
+    // return radio;
 
     // Default to auth failure.
     throw new UnauthorizedException('Invalid API Key or Secret');

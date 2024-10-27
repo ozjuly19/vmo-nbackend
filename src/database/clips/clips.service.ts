@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Clips, Prisma } from '@prisma/client';
+import { Clips, Prisma, RadioSource } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { DatesService } from '../dates/dates.service';
 import { CreateClipDto } from './dto/clips.dto';
@@ -57,11 +57,12 @@ export class ClipsService {
   async uploadClip(
     createClipData: CreateClipDto,
     clipFile: Express.Multer.File,
+    apiPostUser: RadioSource,
   ): Promise<Clips> {
     // Do validations
     this._validateClipFile(clipFile);
 
-    const radio_source_id = '671aad566a8f653b7b401a57'; // TODO: radio_source_id should be dynamic and grabbed from the request via radio auth
+    const radio_source_id = apiPostUser.id; // TODO: radio_source_id should be dynamic and grabbed from the request via radio auth
 
     // Create date if needed
     const dbDate = await this.datesService.createNow(radio_source_id);
